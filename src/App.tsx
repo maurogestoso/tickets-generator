@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { TypographyH1, TypographyH2 } from "./components/ui/typography";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { useEffect, useReducer, useRef, useState } from "react";
+import { TypographyH1 } from "./components/ui/typography";
+import { Card, CardContent } from "./components/ui/card";
 import { Input } from "./components/ui/input";
+import { Button } from "./components/ui/button";
 
 function App() {
-  const { canvasRef, loadImage, img } = useCanvas();
+  const { canvasRef, img, loadImage, textLabels } = useCanvas();
 
   return (
     <>
@@ -26,14 +27,30 @@ function App() {
             </CardContent>
           </Card>
         )}
-
-        <Card className="w-[400px]">
-          <CardHeader>
-            <CardTitle>
-              <TypographyH2>Controls</TypographyH2>
-            </CardTitle>
-          </CardHeader>
-        </Card>
+        {img && (
+          <Card className="w-[400px]">
+            <CardContent>
+              <Button className="mb-4" onClick={textLabels.actions.addNewLabel}>
+                Add text label
+              </Button>
+              {textLabels.state.map((label, i) => (
+                <div className="mb-4">
+                  <p className="mb-2 font-bold">{label.name}</p>
+                  <Input
+                    type="text"
+                    value={label.text}
+                    onChange={(e) => {
+                      textLabels.actions.editLabelText({
+                        index: i,
+                        text: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
       </main>
     </>
   );
@@ -45,15 +62,19 @@ function useCanvas() {
   const [img, setImg] = useState<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const { textLabels, actions } = useTextLabels();
+
   useEffect(() => {
     if (!canvasRef.current) return;
     canvasCtxRef.current = canvasRef.current.getContext("2d");
   }, [img]);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvasCtxRef.current;
     if (!img) return;
-    if (!canvasRef.current) return;
-    if (!canvasCtxRef.current) return;
+    if (!canvas) return;
+    if (!ctx) return;
 
     const maxWidth = 600;
     let width = img.width;
@@ -63,10 +84,26 @@ function useCanvas() {
       height *= maxWidth / width;
       width = maxWidth;
     }
-    canvasRef.current.width = width;
-    canvasRef.current.height = height;
-    canvasCtxRef.current.drawImage(img, 0, 0, width, height);
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
   }, [img]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvasCtxRef.current;
+    if (!img) return;
+    if (!canvas) return;
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    textLabels.forEach((label) => {
+      ctx.font = `${label.size}px Arial`;
+      ctx.fillStyle = "white";
+      ctx.fillText(label.text, label.x, label.y);
+    });
+  }, [textLabels]);
 
   function loadImage(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) return;
@@ -84,5 +121,59 @@ function useCanvas() {
       setImg(newImg);
     };
   }
-  return { canvasRef, loadImage, img };
+
+  return {
+    canvasRef,
+    img,
+    textLabels: { state: textLabels, actions },
+    loadImage,
+  };
+}
+
+type TextLabel = {
+  name: string;
+  text: string;
+  x: number;
+  y: number;
+  size: number;
+};
+
+type Action =
+  | { type: "ADD_NEW_LABEL" }
+  | { type: "EDIT_LABEL_TEXT"; payload: { index: number; text: string } };
+
+function useTextLabels() {
+  const [textLabels, dispatch] = useReducer(function (
+    state: TextLabel[],
+    action: Action,
+  ) {
+    if (action.type === "ADD_NEW_LABEL") {
+      return [
+        ...state,
+        {
+          name: "New text label",
+          text: "",
+          x: 50,
+          y: 50,
+          size: 30,
+        },
+      ];
+    }
+    if (action.type === "EDIT_LABEL_TEXT") {
+      return state.map((label, i) => {
+        if (action.payload.index !== i) return label;
+
+        return { ...label, text: action.payload.text };
+      });
+    }
+    return state;
+  }, []);
+  return {
+    textLabels,
+    actions: {
+      addNewLabel: () => dispatch({ type: "ADD_NEW_LABEL" }),
+      editLabelText: ({ index, text }: { index: number; text: string }) =>
+        dispatch({ type: "EDIT_LABEL_TEXT", payload: { index, text } }),
+    },
+  };
 }
