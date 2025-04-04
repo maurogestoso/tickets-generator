@@ -79,6 +79,8 @@ function App() {
                       <Input
                         type="text"
                         value={label.text}
+                        placeholder="Type some text..."
+                        autoFocus
                         onChange={(e) => {
                           textLabels.actions.editLabelText({
                             index: i,
