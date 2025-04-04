@@ -14,6 +14,10 @@ type Action =
   | {
       type: "UPDATE_LABEL_POSITION";
       payload: { index: number; x: number; y: number };
+    }
+  | {
+      type: "UPDATE_LABEL_SIZE";
+      payload: { index: number; size: number };
     };
 
 export function useTextLabels() {
@@ -34,6 +38,8 @@ export function useTextLabels() {
         y: number;
       }) =>
         dispatch({ type: "UPDATE_LABEL_POSITION", payload: { index, x, y } }),
+      updateLabelSize: ({ index, size }: { index: number; size: number }) =>
+        dispatch({ type: "UPDATE_LABEL_SIZE", payload: { index, size } }),
     },
   };
 }
@@ -62,6 +68,12 @@ function reducer(state: TextLabel[], action: Action) {
     return state.map((label, i) => {
       if (action.payload.index !== i) return label;
       return { ...label, x: action.payload.x, y: action.payload.y };
+    });
+  }
+  if (action.type === "UPDATE_LABEL_SIZE") {
+    return state.map((label, i) => {
+      if (action.payload.index !== i) return label;
+      return { ...label, size: action.payload.size };
     });
   }
   return state;

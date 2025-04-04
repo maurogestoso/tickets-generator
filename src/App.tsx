@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./components/ui/accordion";
+import { Label } from "./components/ui/label";
 
 function App() {
   const { canvasRef, img, loadImage, textLabels, moveTextLabel } = useCanvas();
@@ -76,18 +77,35 @@ function App() {
                   <AccordionItem value={label.name} key={label.name}>
                     <AccordionTrigger>{label.name}</AccordionTrigger>
                     <AccordionContent>
-                      <Input
-                        type="text"
-                        value={label.text}
-                        placeholder="Type some text..."
-                        autoFocus
-                        onChange={(e) => {
-                          textLabels.actions.editLabelText({
-                            index: i,
-                            text: e.target.value,
-                          });
-                        }}
-                      />
+                      <div>
+                        <Label htmlFor={label.name}>Text</Label>
+                        <Input
+                          id={label.name}
+                          type="text"
+                          value={label.text}
+                          placeholder="Type some text..."
+                          autoFocus
+                          onChange={(e) => {
+                            textLabels.actions.editLabelText({
+                              index: i,
+                              text: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <Label>Size</Label>
+                        <Input
+                          type="number"
+                          value={label.size}
+                          onChange={(e) => {
+                            textLabels.actions.updateLabelSize({
+                              index: i,
+                              size: e.target.valueAsNumber,
+                            });
+                          }}
+                        />
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
