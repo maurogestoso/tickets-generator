@@ -76,8 +76,8 @@ function App() {
                 {textLabels.state.map((label, i) => (
                   <AccordionItem value={label.name} key={label.name}>
                     <AccordionTrigger>{label.name}</AccordionTrigger>
-                    <AccordionContent>
-                      <div>
+                    <AccordionContent className="flex flex-col gap-2">
+                      <div className="flex gap-2">
                         <Label htmlFor={label.name}>Text</Label>
                         <Input
                           id={label.name}
@@ -93,7 +93,38 @@ function App() {
                           }}
                         />
                       </div>
-                      <div>
+                      <div className="flex gap-4">
+                        <div className="flex gap-2">
+                          <Label>X</Label>
+                          <Input
+                            type="number"
+                            value={label.x}
+                            onChange={(e) => {
+                              textLabels.actions.updateLabelPosition({
+                                index: i,
+                                x: e.target.valueAsNumber,
+                                y: label.y,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Label>Y</Label>
+                          <Input
+                            type="number"
+                            value={label.y}
+                            onChange={(e) => {
+                              textLabels.actions.updateLabelPosition({
+                                index: i,
+                                x: label.x,
+                                y: e.target.valueAsNumber,
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
                         <Label>Size</Label>
                         <Input
                           type="number"
