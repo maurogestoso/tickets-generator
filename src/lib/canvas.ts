@@ -58,11 +58,22 @@ export function useCanvas() {
     reader.onload = (e) => {
       const newImg = new Image();
       newImg.src = e.target?.result as string;
-
-      console.log("🚀 ~ loadImage ~ newImg:", newImg);
-
       setImg(newImg);
     };
+  }
+
+  function moveTextLabel(
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+    index: number,
+  ) {
+    const canvas = canvasRef.current;
+    const ctx = canvasCtxRef.current;
+    if (!canvas || !ctx || !img) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    actions.updateLabelPosition({ x, y, index });
   }
 
   return {
@@ -70,5 +81,6 @@ export function useCanvas() {
     img,
     textLabels: { state: textLabels, actions },
     loadImage,
+    moveTextLabel,
   };
 }

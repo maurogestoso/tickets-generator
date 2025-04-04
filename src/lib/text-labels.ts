@@ -10,7 +10,11 @@ export type TextLabel = {
 
 type Action =
   | { type: "ADD_NEW_LABEL" }
-  | { type: "EDIT_LABEL_TEXT"; payload: { index: number; text: string } };
+  | { type: "EDIT_LABEL_TEXT"; payload: { index: number; text: string } }
+  | {
+      type: "UPDATE_LABEL_POSITION";
+      payload: { index: number; x: number; y: number };
+    };
 
 export function useTextLabels() {
   const [textLabels, dispatch] = useReducer(reducer, []);
@@ -20,6 +24,16 @@ export function useTextLabels() {
       addNewLabel: () => dispatch({ type: "ADD_NEW_LABEL" }),
       editLabelText: ({ index, text }: { index: number; text: string }) =>
         dispatch({ type: "EDIT_LABEL_TEXT", payload: { index, text } }),
+      updateLabelPosition: ({
+        index,
+        x,
+        y,
+      }: {
+        index: number;
+        x: number;
+        y: number;
+      }) =>
+        dispatch({ type: "UPDATE_LABEL_POSITION", payload: { index, x, y } }),
     },
   };
 }
@@ -29,7 +43,7 @@ function reducer(state: TextLabel[], action: Action) {
     return [
       ...state,
       {
-        name: "New text label",
+        name: `Text label #${state.length + 1}`,
         text: "",
         x: 50,
         y: 50,
@@ -42,6 +56,12 @@ function reducer(state: TextLabel[], action: Action) {
       if (action.payload.index !== i) return label;
 
       return { ...label, text: action.payload.text };
+    });
+  }
+  if (action.type === "UPDATE_LABEL_POSITION") {
+    return state.map((label, i) => {
+      if (action.payload.index !== i) return label;
+      return { ...label, x: action.payload.x, y: action.payload.y };
     });
   }
   return state;
