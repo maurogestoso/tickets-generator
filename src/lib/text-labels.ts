@@ -11,6 +11,7 @@ export type TextLabel = {
 type Action =
   | { type: "ADD_NEW_LABEL" }
   | { type: "EDIT_LABEL_TEXT"; payload: { index: number; text: string } }
+  | { type: "EDIT_LABEL_NAME"; payload: { index: number; name: string } }
   | {
       type: "UPDATE_LABEL_POSITION";
       payload: { index: number; x: number; y: number };
@@ -28,6 +29,8 @@ export function useTextLabels() {
       addNewLabel: () => dispatch({ type: "ADD_NEW_LABEL" }),
       editLabelText: ({ index, text }: { index: number; text: string }) =>
         dispatch({ type: "EDIT_LABEL_TEXT", payload: { index, text } }),
+      editLabelName: ({ index, name }: { index: number; name: string }) =>
+        dispatch({ type: "EDIT_LABEL_NAME", payload: { index, name } }),
       updateLabelPosition: ({
         index,
         x,
@@ -62,6 +65,13 @@ function reducer(state: TextLabel[], action: Action) {
       if (action.payload.index !== i) return label;
 
       return { ...label, text: action.payload.text };
+    });
+  }
+  if (action.type === "EDIT_LABEL_NAME") {
+    return state.map((label, i) => {
+      if (action.payload.index !== i) return label;
+
+      return { ...label, name: action.payload.name };
     });
   }
   if (action.type === "UPDATE_LABEL_POSITION") {

@@ -1,14 +1,17 @@
-import { TypographyH1 } from "./components/ui/typography";
+import { TypographyH1, TypographyH4 } from "./components/ui/typography";
 import { Card, CardContent } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { useCanvas } from "./lib/canvas";
 import { useState } from "react";
 import { TextLabelList } from "./components/text-label-list";
+import { Label } from "./components/ui/label";
+import { useCsvFile } from "./lib/csv-file";
 
 function App() {
   const { canvasRef, img, loadImage, textLabels, moveTextLabel } = useCanvas();
   const [activeTextLabel, setActiveTextLabel] = useState<number | null>(null);
+  const { loadCsvFile, data: csvData } = useCsvFile();
 
   function handleLabelSelect(selectedLabel: string) {
     const idx = textLabels.state.findIndex(
@@ -48,6 +51,14 @@ function App() {
         {img && (
           <Card className="w-[400px]">
             <CardContent>
+              <Label htmlFor="csvUpload">CSV file</Label>
+              <Input
+                type="file"
+                id="csvUpload"
+                accept=".csv"
+                onChange={loadCsvFile}
+              />
+              <br />
               <Button
                 className="mb-4"
                 onClick={() => {
@@ -64,6 +75,7 @@ function App() {
                 onLabelEditText={textLabels.actions.editLabelText}
                 onLabelUpdatePosition={textLabels.actions.updateLabelPosition}
                 onLabelUpdateSize={textLabels.actions.updateLabelSize}
+                csvData={csvData}
               />
             </CardContent>
           </Card>

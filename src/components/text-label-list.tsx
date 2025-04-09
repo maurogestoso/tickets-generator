@@ -7,6 +7,7 @@ import {
 } from "./ui/accordion";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { CsvData } from "@/lib/csv-file";
 
 type Props = {
   activeLabelIndex: number | null;
@@ -19,6 +20,7 @@ type Props = {
     y: number;
   }) => void;
   onLabelUpdateSize: (params: { index: number; size: number }) => void;
+  csvData: CsvData | null;
 };
 
 export function TextLabelList({
@@ -28,7 +30,10 @@ export function TextLabelList({
   onLabelEditText,
   onLabelUpdatePosition,
   onLabelUpdateSize,
+  csvData,
 }: Props) {
+  if (csvData) console.log("🚀 ~ csvData:", csvData);
+
   return (
     <Accordion
       type="single"
