@@ -5,7 +5,7 @@ import { TypographyH1 } from "./ui/typography";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { TextLabelList } from "./text-label-list";
-import { TextLabel, useTextLabels } from "@/lib/text-labels";
+import { TextLabel, useTextLabels } from "@/lib/use-text-labels";
 
 export function TemplateEditor() {
   const navigate = useNavigate();

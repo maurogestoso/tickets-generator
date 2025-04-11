@@ -12,13 +12,9 @@ type Props = {
   activeLabelIndex: number | null;
   textLabels: TextLabel[];
   onLabelSelect: (selectedLabel: string) => void;
-  onLabelEditText: (params: { index: number; text: string }) => void;
-  onLabelUpdatePosition: (params: {
-    index: number;
-    x: number;
-    y: number;
-  }) => void;
-  onLabelUpdateSize: (params: { index: number; size: number }) => void;
+  onLabelEditText: (index: number, text: string) => void;
+  onLabelUpdatePosition: (index: number, pos: { x: number; y: number }) => void;
+  onLabelUpdateSize: (index: number, size: number) => void;
 };
 
 export function TextLabelList({
@@ -53,7 +49,7 @@ export function TextLabelList({
                 placeholder="Type some text..."
                 autoFocus
                 onChange={(e) => {
-                  onLabelEditText({ index, text: e.target.value });
+                  onLabelEditText(index, e.target.value);
                 }}
               />
             </div>
@@ -64,8 +60,7 @@ export function TextLabelList({
                   type="number"
                   value={label.x}
                   onChange={(e) => {
-                    onLabelUpdatePosition({
-                      index,
+                    onLabelUpdatePosition(index, {
                       x: e.target.valueAsNumber,
                       y: label.y,
                     });
@@ -78,8 +73,7 @@ export function TextLabelList({
                   type="number"
                   value={label.y}
                   onChange={(e) => {
-                    onLabelUpdatePosition({
-                      index,
+                    onLabelUpdatePosition(index, {
                       x: label.x,
                       y: e.target.valueAsNumber,
                     });
@@ -94,10 +88,7 @@ export function TextLabelList({
                 type="number"
                 value={label.size}
                 onChange={(e) => {
-                  onLabelUpdateSize({
-                    index: index,
-                    size: e.target.valueAsNumber,
-                  });
+                  onLabelUpdateSize(index, e.target.valueAsNumber);
                 }}
               />
             </div>
