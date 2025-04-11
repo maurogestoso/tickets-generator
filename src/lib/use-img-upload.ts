@@ -5,7 +5,7 @@ export type ImgState = {
   setImg: (img: HTMLImageElement) => void;
 };
 
-export const useImg = create<ImgState>()((set) => ({
+export const useImgUpload = create<ImgState>()((set) => ({
   img: null,
   setImg: (img) => set({ img }),
 }));

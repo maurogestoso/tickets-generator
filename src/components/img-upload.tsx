@@ -1,10 +1,10 @@
-import { useImg } from "@/lib/use-img-upload";
+import { useImgUpload } from "@/lib/use-img-upload";
 import { useNavigate } from "react-router";
 import { TypographyH1 } from "./ui/typography";
 import { Input } from "./ui/input";
 
 export function ImageUpload() {
-  const { setImg } = useImg();
+  const { setImg } = useImgUpload();
   const navigate = useNavigate();
 
   function loadImage(event: React.ChangeEvent<HTMLInputElement>) {
