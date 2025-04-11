@@ -18,7 +18,7 @@ export function ImageUpload() {
       const newImg = new Image();
       newImg.src = e.target?.result as string;
       setImg(newImg);
-      navigate("/template-editor");
+      navigate("/");
     };
   }
 
