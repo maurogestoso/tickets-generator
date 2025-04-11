@@ -4,8 +4,15 @@ import { useImgUpload } from "@/lib/use-img-upload";
 import { TypographyH1 } from "./ui/typography";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { TextLabelList } from "./text-label-list";
 import { TextLabel, useTextLabels } from "@/lib/use-text-labels";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 
 export function TemplateEditor() {
   const navigate = useNavigate();
@@ -35,14 +42,79 @@ export function TemplateEditor() {
             >
               Add text label
             </Button>
-            <TextLabelList
-              activeLabelIndex={activeTextLabel}
-              textLabels={textLabels}
-              onLabelSelect={selectActiveTextLabel}
-              onLabelEditText={actions.editLabelText}
-              onLabelUpdatePosition={actions.updateLabelPosition}
-              onLabelUpdateSize={actions.updateLabelSize}
-            />
+            <Accordion
+              type="single"
+              collapsible
+              value={
+                activeTextLabel !== null
+                  ? textLabels[activeTextLabel]!.name
+                  : undefined
+              }
+              onValueChange={selectActiveTextLabel}
+            >
+              {textLabels.map((label, index) => (
+                <AccordionItem value={label.name} key={label.name}>
+                  <AccordionTrigger>{label.name}</AccordionTrigger>
+                  <AccordionContent className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <Label htmlFor={label.name}>Text</Label>
+                      <Input
+                        id={label.name}
+                        type="text"
+                        value={label.text}
+                        placeholder="Type some text..."
+                        autoFocus
+                        onChange={(e) => {
+                          actions.editLabelText(index, e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="flex gap-2">
+                        <Label>X</Label>
+                        <Input
+                          type="number"
+                          value={label.x}
+                          onChange={(e) => {
+                            actions.updateLabelPosition(index, {
+                              x: e.target.valueAsNumber,
+                              y: label.y,
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Label>Y</Label>
+                        <Input
+                          type="number"
+                          value={label.y}
+                          onChange={(e) => {
+                            actions.updateLabelPosition(index, {
+                              x: label.x,
+                              y: e.target.valueAsNumber,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Label>Size</Label>
+                      <Input
+                        type="number"
+                        value={label.size}
+                        onChange={(e) => {
+                          actions.updateLabelSize(
+                            index,
+                            e.target.valueAsNumber,
+                          );
+                        }}
+                      />
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </CardContent>
         </Card>
       </div>
