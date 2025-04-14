@@ -1,7 +1,7 @@
 import { useImgUpload } from "@/lib/use-img-upload";
 import { useNavigate } from "react-router";
-import { TypographyH1 } from "./ui/typography";
-import { Input } from "./ui/input";
+import { TypographyH1 } from "../ui/typography";
+import { Input } from "../ui/input";
 
 export function ImageUpload() {
   const { setImg } = useImgUpload();
@@ -18,7 +18,7 @@ export function ImageUpload() {
       const newImg = new Image();
       newImg.src = e.target?.result as string;
       setImg(newImg);
-      navigate("/template-editor");
+      navigate("/path-a/template-editor");
     };
   }
 

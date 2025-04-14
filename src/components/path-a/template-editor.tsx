@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useImgUpload } from "@/lib/use-img-upload";
-import { TypographyH1 } from "./ui/typography";
-import { Card, CardContent, CardFooter } from "./ui/card";
-import { Button } from "./ui/button";
+import { TypographyH1 } from "../ui/typography";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { Button } from "../ui/button";
 import { TextLabel, useTextLabels } from "@/lib/use-text-labels";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./ui/accordion";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
+} from "../ui/accordion";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 import { useCanvas } from "@/lib/use-canvas";
 
 export function TemplateEditor() {
@@ -118,7 +118,7 @@ export function TemplateEditor() {
             </Accordion>
           </CardContent>
           <CardFooter>
-            <Link to="/data-editor">
+            <Link to="/path-a/data-editor">
               <Button variant="secondary" className="w-full">
                 To Data Editor
               </Button>

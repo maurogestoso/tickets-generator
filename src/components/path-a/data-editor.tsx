@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { TypographyH1, TypographyH2 } from "./ui/typography";
+import { TypographyH1, TypographyH2 } from "../ui/typography";
 import { type } from "arktype";
 import Papa from "papaparse";
 import { useNavigate } from "react-router";
 import { useImgUpload } from "@/lib/use-img-upload";
 import { useTextLabels } from "@/lib/use-text-labels";
 import { useCanvas } from "@/lib/use-canvas";
-import { Card, CardContent, CardFooter } from "./ui/card";
-import { Input } from "./ui/input";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { Input } from "../ui/input";
 import {
   Table,
   TableBody,
@@ -15,9 +15,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
-import { Combobox } from "./ui/combobox";
-import { Button } from "./ui/button";
+} from "../ui/table";
+import { Combobox } from "../ui/combobox";
+import { Button } from "../ui/button";
 import JSZip from "jszip";
 
 export function DataEditor() {
