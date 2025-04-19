@@ -100,7 +100,7 @@ export function DataEditor() {
           <Button
             onClick={() => {
               createNewLabels();
-              navigate("/path-b/template-editor");
+              navigate("/template-editor");
             }}
           >
             To Template Editor
