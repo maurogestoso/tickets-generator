@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useCsvData } from "@/lib/path-b/use-csv-data";
 import { useTextLabels } from "@/lib/path-b/use-labels";
 
-import { Card, CardContent, CardFooter } from "../ui/card";
-import { Input } from "../ui/input";
-import { TypographyH1, TypographyH2 } from "../ui/typography";
+import { Card, CardContent, CardFooter } from "./ui/card";
+import { Input } from "./ui/input";
+import { TypographyH1, TypographyH2 } from "./ui/typography";
 import {
   Table,
   TableBody,
@@ -14,9 +14,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
+} from "./ui/table";
+import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
 
 export function DataEditor() {
   const [selectedHeaders, setSelectedHeaders] = useState(new Set<number>());

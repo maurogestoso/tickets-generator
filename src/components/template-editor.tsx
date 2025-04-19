@@ -1,7 +1,7 @@
 import { TextLabel, useTextLabels } from "@/lib/path-b/use-labels";
-import { TypographyH1 } from "../ui/typography";
-import { Card, CardContent } from "../ui/card";
-import { Input } from "../ui/input";
+import { TypographyH1 } from "./ui/typography";
+import { Card, CardContent } from "./ui/card";
+import { Input } from "./ui/input";
 import { useImgUpload } from "@/lib/use-img-upload";
 import { useCanvas } from "@/lib/path-b/use-canvas";
 import {
@@ -9,8 +9,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
-import { Label } from "../ui/label";
+} from "./ui/accordion";
+import { Label } from "./ui/label";
 import { useState } from "react";
 
 export function TemplateEditor() {
